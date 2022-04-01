@@ -8,7 +8,7 @@ st.write('''
     that allows users to visualize the number of  Covid-19 cases or deaths per country 
     as a function of time
     ![](https://media.giphy.com/media/idShevOa24HzYTgz06/giphy.gif)
-    
+
 ''')
 
 confirmed = pd.read_csv('time_series_covid19_confirmed_global.csv', on_bad_lines = 'skip')
@@ -24,7 +24,7 @@ def simpleGraph():
   plt.xticks(rotation=90)
   plt.xlabel("Date", fontsize=8)
   plt.ylabel("Total deaths per million", fontsize=8)
-  sns.lineplot(data=data['total_deaths'])
+  #sns.lineplot(data=data['total_deaths'])
   return fig
 
 
