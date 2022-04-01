@@ -11,3 +11,16 @@ print(confirmed.shape)
 print("Hello")
 
 print(confirmed.head())
+
+st.title( Demand Forecasting — Analytics Vidhya’)
+
+# creating country list
+
+clist = confirmed['Country/Region'].unique()
+
+country = st.sidebar.selectbox("Select a country:",clist)
+
+st.header("Covid confirmed cases over time")
+
+df = confirmed["total_cases"]
+st.line_chart(df)
