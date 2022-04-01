@@ -7,6 +7,8 @@ st.write('''
     Hello :wave:  For our *open-source* project, we created an interactive **Covid-19** dashboard 
     that allows users to visualize the number of  Covid-19 cases or deaths per country 
     as a function of time
+    ![](https://media.giphy.com/media/idShevOa24HzYTgz06/giphy.gif)
+    
 ''')
 
 confirmed = pd.read_csv('time_series_covid19_confirmed_global.csv', on_bad_lines = 'skip')
