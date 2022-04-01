@@ -2,6 +2,13 @@ import pandas as pd
 import streamlit as st
 import matplotlib as plt
 
+st.write('''
+    # Covid Dashboard
+    Hello :wave:  For our *open-source* project, we created an interactive **Covid-19** dashboard 
+    that allows users to visualize the number of  Covid-19 cases or deaths per country 
+    as a function of time
+''')
+
 confirmed = pd.read_csv('time_series_covid19_confirmed_global.csv', on_bad_lines = 'skip')
 death = pd.read_csv('time_series_covid19_deaths_global.csv', on_bad_lines = 'skip')
 recovered = pd.read_csv('time_series_covid19_recovered_global.csv', on_bad_lines = 'skip')
