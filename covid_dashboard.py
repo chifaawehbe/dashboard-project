@@ -10,7 +10,7 @@ st.markdown('''Hello :wave:  For our *open-source* project, we created an intera
     that allows users to visualize the number of  Covid-19 cases or deaths per country 
     as a function of time''')
 
-st.markdown('''g
+st.markdown('''
           Coronavirus disease (COVID-19) is an infectious disease caused by a newly 
             discovered coronavirus. Most people infected with the COVID-19 virus will 
             experience mild to moderate respiratory illness and recover without requiring 
@@ -30,7 +30,6 @@ def load_data():
   return covid
 
 covid = load_data()
-#data_load_state.text('Data is baked')
 
 def simpleGraph(data):
   # fig=plt.figure(figsize=(14,6))
@@ -45,7 +44,7 @@ def simpleGraph(data):
   plt.savefig('plot.png')
   return fig
 
-continent = st.sidebar.selectbox('Select a Continent',covid['continent'])
+continent = st.sidebar.selectbox('Select a Continent',covid['continent'].unique())
 if continent == "Asia":
   st.title("Total cases in Asia") 
   asia = covid.loc[covid['continent'] == "Asia"]  
@@ -53,22 +52,35 @@ if continent == "Asia":
   fig = px.line(asia, x="date", y='total_cases')
   st.plotly_chart(fig)
 
-if continent == "Europe":
+elif continent == "Europe":
   st.title("Total cases in Europe") 
   europe = covid.loc[covid['continent'] == "Europe"] 
   fig = px.line(europe, x="date", y='total_cases')
   st.plotly_chart(fig)
   
-if continent == "Africa":
+elif continent == "Africa":
   st.title("Total cases in Africa") 
   africa = covid.loc[covid['continent'] == "Africa"] 
   fig = px.line(africa, x="date", y='total_cases')
   st.plotly_chart(fig)
   
-if continent == "Africa":
-  st.title("Total cases in Africa") 
-  africa = covid.loc[covid['continent'] == "Africa"] 
-  fig = px.line(africa, x="date", y='total_cases')
+elif continent == "North America":
+  st.title("Total cases in North America") 
+  na = covid.loc[covid['continent'] == "North America"] 
+  fig = px.line(na, x="date", y='total_cases')
+  st.plotly_chart(fig)
+
+elif continent == "South America":
+  st.title("Total cases in South America") 
+  sa = covid.loc[covid['continent'] == "South America"] 
+  fig = px.line(sa, x="date", y='total_cases')
+  st.plotly_chart(fig)
+
+#if continent == "Oceania":
+else:
+  st.title("Total cases in Oceania") 
+  ocean = covid.loc[covid['continent'] == "Oceania"] 
+  fig = px.line(ocean, x="date", y='total_cases')
   st.plotly_chart(fig)
 
 
