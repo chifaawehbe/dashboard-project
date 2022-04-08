@@ -10,7 +10,7 @@ st.markdown('''Hello :wave:  For our *open-source* project, we created an intera
     that allows users to visualize the number of  Covid-19 cases or deaths per country 
     as a function of time''')
 
-st.markdown('''
+st.markdown('''g
           Coronavirus disease (COVID-19) is an infectious disease caused by a newly 
             discovered coronavirus. Most people infected with the COVID-19 virus will 
             experience mild to moderate respiratory illness and recover without requiring 
@@ -25,7 +25,7 @@ st.sidebar.title("Visualization Selector")
 
 @st.cache
 def load_data():
-  covid = pd.read_csv('owid-covid-data.csv')
+  covid = pd.read_csv('https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv')
   covid['date'] = pd.to_datetime(covid['date'])
   return covid
 
