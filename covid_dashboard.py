@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
-import matplotlib as plt
+import matplotlib_inline as plt
+import seaborn as sns
 
 st.write('''
     # Covid Dashboard
