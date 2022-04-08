@@ -16,9 +16,9 @@ st.markdown('''
             experience mild to moderate respiratory illness and recover without requiring 
             special treatment.''')
 
-st.write('''
-    ![](https://media.giphy.com/media/idShevOa24HzYTgz06/giphy.gif)
-''')
+# st.write('''
+#     ![](https://media.giphy.com/media/idShevOa24HzYTgz06/giphy.gif)
+# ''')
             
 st.sidebar.title("Visualization Selector")
 #st.sidebar.markdown("Select the Continent:")
@@ -43,6 +43,24 @@ def simpleGraph(data):
   #sns.lineplot(x='date', y=data['total_cases'])
   plt.savefig('plot.png')
   return fig
+
+def plot():
+    covid = pd.DataFrame(px.data.gapminder())
+
+    clist = covid["location"].unique().tolist()
+
+    countries = st.multiselect("Select country", clist)
+    st.header("You selected: {}".format(", ".join(countries)))
+
+    dfs = {country: covid[covid["location"] == country] for country in countries}
+
+    fig = go.Figure()
+    for country, covid in dfs.items():
+        fig = fig.add_trace(go.line(x=covid["date"], y=covid["total_cases"], name=country))
+
+    st.plotly_chart(fig)
+
+plot()
 
 continent = st.sidebar.selectbox('Select a Continent',covid['continent'].unique())
 if continent == "Asia":

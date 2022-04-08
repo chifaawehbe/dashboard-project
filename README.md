@@ -5,7 +5,7 @@ For our open-source project, we will create an interactive **Covid-19** dashboar
 #### Create the virtual environment
 1. Open VS code
 1. Go to the terminal where you cloned the project
-1. To create the new environment, run the command: `python -m venv dashboard-env` 
+1. To create the new environment, run the command: `python3 -m venv dashboard-env` 
 1. Activate your virtual python environment : `source dashboard-env/bin/activate` 
 1. Install the dependencies: `python -m pip install -r requirements.txt`
 
