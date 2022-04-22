@@ -4,6 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 import plotly.express as px
+import datetime
 
 st.title('COVID dashboard')
 st.markdown('''Hello :wave:  For our *open-source* project, we created an interactive **Covid-19** dashboard 
@@ -31,26 +32,40 @@ def load_data():
 
 
 def plot():
-    #covid = pd.DataFrame(px.data.gapminder())
+  
     covid = load_data()
 
-    clist = covid['location'].unique().tolist()
+    #datepicker
+    today = datetime.date.today()
+    dateselecters = st.sidebar.date_input('Start date', datetime.date(2020,3,1))
+    tomorrow = today + datetime.timedelta(days=1)
+    dateselectere = st.sidebar.date_input('End date', tomorrow)
+    if dateselecters < dateselectere:
+        st.success('Start date: `%s`\n\nEnd date:`%s`' % (dateselecters, dateselectere))
+    else:
+      st.error('Error: End date must fall after start date.')
 
-    countries = st.multiselect("Select country", clist)
+    #covid["date"] = pd.to_datetime(covid["date"]).dt.date
+    mask = (covid['date']<dateselectere) & (covid['date'] >= dateselecters)
+    covid2=covid[mask]
+
+    clist = covid2['location'].unique().tolist()
+
+    countries = st.multiselect("Select country", clist, default = 'France')
     st.header("You selected: {}".format(", ".join(countries)))
 
-    dfs = {country: covid[covid["location"] == country] for country in countries}
+    dfs = {country: covid2[covid2["location"] == country] for country in countries}
 
     fig = go.Figure()
-    for country, covid in dfs.items():
-        fig = fig.add_trace(go.Scatter(x=covid["date"], y=covid["total_cases"], name=country))
+    for country, covid2 in dfs.items():
+        fig = fig.add_trace(go.Scatter(x=covid2["date"], y=covid2["total_cases"], name=country))
 
     st.plotly_chart(fig)
 
 
 
-page = st.sidebar.selectbox('Total cases',('By country', 'By time'))
-if page == 'By country':
+page = st.sidebar.selectbox('Total cases',('Total cases', 'Total deaths'))
+if page == 'Total cases':
   st.title("Total cases by country")   
   plot()
 
@@ -61,3 +76,5 @@ if page == 'By country':
   # st.plotly_chart(fig)
 
 
+#cumulative, raw, smooth
+#normalized data
