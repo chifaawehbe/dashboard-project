@@ -31,7 +31,7 @@ def load_data(url):
     df['date'] = pd.DatetimeIndex(df.date)
     return df
 
-#Loading the data
+#Load the data
 url = "https://covid.ourworldindata.org/data/owid-covid-data.csv"
 covid = load_data(url)
 
