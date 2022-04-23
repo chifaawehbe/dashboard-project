@@ -22,13 +22,26 @@ st.markdown('''
 # ''')
             
 st.sidebar.title("Visualization Selector")
-#st.sidebar.markdown("Select the Continent:")
 
 @st.cache
-def load_data():
-  covid = pd.read_csv('https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv')
-  covid['date'] = pd.to_datetime(covid['date'])
-  return covid
+def load_data(url):
+    df = pd.read_csv(url)
+    df["date"] = pd.to_datetime(df.date).dt.date
+    df['date'] = pd.DatetimeIndex(df.date)
+    return df
+
+#Loading the data
+url = "https://covid.ourworldindata.org/data/owid-covid-data.csv"
+covid = load_data(url)
+
+#Remove the locations that are not a country
+countries = df.location.unique().tolist()
+
+not_a_country = ['World', 'Oceania', 'Africa', 'Asia', 'Europe', 'European Union', 'High income', 
+'International', 'Low income', 'Lower middle income', 'South America', 'Upper middle income']
+
+for x in not_a_country:
+    countries.remove(x)
 
 
 def plot():
@@ -64,16 +77,22 @@ def plot():
 
 
 
-page = st.sidebar.selectbox('Total cases',('Total cases', 'Total deaths'))
+data = st.sidebar.selectbox('Choose the data',('Total cases', 'Total deaths'))
+
+data_type = sidebar.radio("Choose the data type", ["Cumulated data", "Raw data", "7-Day Rolling Average"])
+
 if page == 'Total cases':
-  st.title("Total cases by country")   
+  st.title("Total cases")   
   plot()
 
+if page == 'Total deaths':
+  st.title("Total deaths")   
+  plot()
 # else:
-  # st.title("Total cases in Oceania") 
-  # ocean = covid.loc[covid['continent'] == "Oceania"] 
-  # fig = px.line(ocean, x="date", y='total_cases')
-  # st.plotly_chart(fig)
+#   st.title("Total cases in Oceania") 
+#   ocean = covid.loc[covid['continent'] == "Oceania"] 
+#   fig = px.line(ocean, x="date", y='total_cases')
+#   st.plotly_chart(fig)
 
 
 #cumulative, raw, smooth
