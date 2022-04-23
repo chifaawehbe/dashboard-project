@@ -66,12 +66,12 @@ today = datetime.date.today()
 start = st.sidebar.date_input('Start date', datetime.date(2020,3,1))
 tomorrow = today + datetime.timedelta(days=1)
 end = st.sidebar.date_input('End date', tomorrow)
-if start < end:
-    st.success('Start date: `%s`\n\nEnd date:`%s`' % (start, end))
-else:
-  st.error('Error: End date must fall after start date.')
+# if start < end:
+#     st.success('Start date: `%s`\n\nEnd date:`%s`' % (start, end))
+# else:
+#   st.error('Error: End date must fall after start date.')
 
-# Mask for the selected date 
+# Mask for the selected countries and date 
 start = np.datetime64(start)
 end = np.datetime64(end)
 covid_countries['date'] = pd.to_datetime(covid_countries['date'])
@@ -80,53 +80,36 @@ new_covid = covid_countries.loc[mask]
 
 # Plot Function
 def plot(data_type):
-    fig=px.line(new_covid, x=new_covid['date'], y=new_covid[data_type], color='location')
-    #fig.update_layout(margin={"r": 0, "t": 50, "l": 0, "b": 0})
+    fig=px.line(new_covid, x=new_covid['date'], y=new_covid[data_type], color='location',
+    color_discrete_sequence=px.colors.qualitative.G10)
     return fig
 
+# Configure all the possible cases
 if data == 'Total cases' and data_type == 'Cumulated data':
-  st.plotly_chart(plot(data_type='total_cases_per_million').update_layout(title='Cumulated data of Covid cases', 
+  #st.markdown("Covid cases Cumulated data")
+  st.plotly_chart(plot(data_type='total_cases_per_million').update_layout(title='Covid cases Cumulated data', 
   xaxis_title='Date', yaxis_title='Cumulated number of cases (per million)'), use_container_width=True)
 
 if data == 'Total cases' and data_type == 'Raw data':
-  st.plotly_chart(plot(data_type='new_cases_per_million').update_layout(title='Raw data of Covid cases', 
+  st.plotly_chart(plot(data_type='new_cases_per_million').update_layout(title='Covid cases Raw data', 
   xaxis_title='Date', yaxis_title='Raw number of cases (per million)'), use_container_width=True)  
 
 if data == 'Total cases' and data_type == '7 days rolling average':
-  st.plotly_chart(plot(data_type='new_cases_smoothed_per_million').update_layout(title='7 days rolling average of Covid cases', 
+  st.plotly_chart(plot(data_type='new_cases_smoothed_per_million').update_layout(title='Covid cases 7 days rolling average', 
   xaxis_title='Date', yaxis_title='7 days rolling average of cases (per million)'), use_container_width=True) 
 
 if data == 'Total deaths' and data_type == 'Cumulated data':
-  st.plotly_chart(plot(data_type='total_deaths_per_million').update_layout(title='Cumulated data of Covid deaths', 
+  st.plotly_chart(plot(data_type='total_deaths_per_million').update_layout(title='Covid deaths Cumulated data', 
   xaxis_title='Date', yaxis_title='Cumulated number of deaths (per million)'), use_container_width=True)
 
 if data == 'Total deaths' and data_type == 'Raw data':
-  st.plotly_chart(plot(data_type='new_deaths_per_million').update_layout(title='Raw data of Covid deaths', 
+  st.plotly_chart(plot(data_type='new_deaths_per_million').update_layout(title='Covid deaths Raw data', 
   xaxis_title='Date', yaxis_title='Raw number of deaths (per million)'), use_container_width=True)  
 
 if data == 'Total deaths' and data_type == '7 days rolling average':
-  st.plotly_chart(plot(data_type='new_deaths_smoothed_per_million').update_layout(title='7 days rolling average of Covid deaths', 
+  st.plotly_chart(plot(data_type='new_deaths_smoothed_per_million').update_layout(title='Covid deaths 7 days rolling average', 
   xaxis_title='Date', yaxis_title='7 days rolling average of deaths (per million)'), use_container_width=True) 
 
 
-#cumulative, raw, smooth
-#normalized data
 
-
-def plot():
-  
-    covid = load_data()
-
-    clist = covid2['location'].unique().tolist()
-
-    countries = st.multiselect("Select country", clist, default = 'France')
-    st.header("You selected: {}".format(", ".join(countries)))
-
-    dfs = {country: covid2[covid2["location"] == country] for country in countries}
-
-    fig = go.Figure()
-    for country, covid2 in dfs.items():
-        fig = fig.add_trace(go.Scatter(x=covid2["date"], y=covid2["total_cases"], name=country))
-
-    st.plotly_chart(fig)
 
