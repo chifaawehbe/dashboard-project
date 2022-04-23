@@ -8,9 +8,9 @@ import numpy as np
 import datetime
 
 st.title('COVID dashboard')
-# st.markdown('''Hello :wave:  For our *open-source* project, we created an interactive **Covid-19** dashboard 
-#     that allows users to visualize the number of  Covid-19 cases or deaths per country 
-#     as a function of time''')
+st.markdown('''Hello :wave:  For our *open-source* project, we created an interactive **Covid-19** dashboard 
+    that allows users to visualize the number of  Covid-19 cases or deaths per country 
+    as a function of time''')
 
 # st.markdown('''
 #           Coronavirus disease (COVID-19) is an infectious disease caused by a newly 
