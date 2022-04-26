@@ -4,6 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 import plotly.express as px
+import datetime
 
 st.title('COVID dashboard')
 st.markdown('''Hello :wave:  For our *open-source* project, we created an interactive **Covid-19** dashboard 
@@ -16,9 +17,9 @@ st.markdown('''
             experience mild to moderate respiratory illness and recover without requiring 
             special treatment.''')
 
-st.write('''
-    ![](https://media.giphy.com/media/idShevOa24HzYTgz06/giphy.gif)
-''')
+# st.write('''
+#     ![](https://media.giphy.com/media/idShevOa24HzYTgz06/giphy.gif)
+# ''')
             
 st.sidebar.title("Visualization Selector")
 #st.sidebar.markdown("Select the Continent:")
@@ -29,58 +30,51 @@ def load_data():
   covid['date'] = pd.to_datetime(covid['date'])
   return covid
 
-covid = load_data()
 
-def simpleGraph(data):
-  # fig=plt.figure(figsize=(14,6))
-  # plt.title("Total cases by Continent")
-  # plt.xticks(rotation=90)
-  # plt.xlabel("Date", fontsize=8)
-  # plt.ylabel("Total cases per million", fontsize=8)
-  fig = px.line(data, x='date', y='total_cases')
-  #plt.plot('date','total_cases', data)
-  #plt.show()
-  #sns.lineplot(x='date', y=data['total_cases'])
-  plt.savefig('plot.png')
-  return fig
-
-continent = st.sidebar.selectbox('Select a Continent',covid['continent'].unique())
-if continent == "Asia":
-  st.title("Total cases in Asia") 
-  asia = covid.loc[covid['continent'] == "Asia"]  
-  #st.pyplot(simpleGraph(asia), use_container_width = True)
-  fig = px.line(asia, x="date", y='total_cases')
-  st.plotly_chart(fig)
-
-elif continent == "Europe":
-  st.title("Total cases in Europe") 
-  europe = covid.loc[covid['continent'] == "Europe"] 
-  fig = px.line(europe, x="date", y='total_cases')
-  st.plotly_chart(fig)
+def plot():
   
-elif continent == "Africa":
-  st.title("Total cases in Africa") 
-  africa = covid.loc[covid['continent'] == "Africa"] 
-  fig = px.line(africa, x="date", y='total_cases')
-  st.plotly_chart(fig)
-  
-elif continent == "North America":
-  st.title("Total cases in North America") 
-  na = covid.loc[covid['continent'] == "North America"] 
-  fig = px.line(na, x="date", y='total_cases')
-  st.plotly_chart(fig)
+    covid = load_data()
 
-elif continent == "South America":
-  st.title("Total cases in South America") 
-  sa = covid.loc[covid['continent'] == "South America"] 
-  fig = px.line(sa, x="date", y='total_cases')
-  st.plotly_chart(fig)
+    #datepicker
+    today = datetime.date.today()
+    dateselecters = st.sidebar.date_input('Start date', datetime.date(2020,3,1))
+    tomorrow = today + datetime.timedelta(days=1)
+    dateselectere = st.sidebar.date_input('End date', tomorrow)
+    if dateselecters < dateselectere:
+        st.success('Start date: `%s`\n\nEnd date:`%s`' % (dateselecters, dateselectere))
+    else:
+      st.error('Error: End date must fall after start date.')
 
-#if continent == "Oceania":
-else:
-  st.title("Total cases in Oceania") 
-  ocean = covid.loc[covid['continent'] == "Oceania"] 
-  fig = px.line(ocean, x="date", y='total_cases')
-  st.plotly_chart(fig)
+    #covid["date"] = pd.to_datetime(covid["date"]).dt.date
+    mask = (covid['date']<dateselectere) & (covid['date'] >= dateselecters)
+    covid2=covid[mask]
+
+    clist = covid2['location'].unique().tolist()
+
+    countries = st.multiselect("Select country", clist, default = 'France')
+    st.header("You selected: {}".format(", ".join(countries)))
+
+    dfs = {country: covid2[covid2["location"] == country] for country in countries}
+
+    fig = go.Figure()
+    for country, covid2 in dfs.items():
+        fig = fig.add_trace(go.Scatter(x=covid2["date"], y=covid2["total_cases"], name=country))
+
+    st.plotly_chart(fig)
 
 
+
+page = st.sidebar.selectbox('Total cases',('Total cases', 'Total deaths'))
+if page == 'Total cases':
+  st.title("Total cases by country")   
+  plot()
+
+# else:
+  # st.title("Total cases in Oceania") 
+  # ocean = covid.loc[covid['continent'] == "Oceania"] 
+  # fig = px.line(ocean, x="date", y='total_cases')
+  # st.plotly_chart(fig)
+
+
+#cumulative, raw, smooth
+#normalized data
