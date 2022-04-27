@@ -26,7 +26,7 @@ st.sidebar.title("Visualization Selector")
 
 @st.cache
 def load_data():
-  covid = pd.read_csv('https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv')
+  covid = pd.read_csv('owid-covid-data.csv')
   covid['date'] = pd.to_datetime(covid['date'])
   return covid
 
@@ -58,7 +58,7 @@ else:
 
 # Create a list of possible values and multiselect menu with them in it.
 COUNTRIES = covid['location'].unique()
-COUNTRIES_SELECTED = st.multiselect('Select countries', COUNTRIES)
+COUNTRIES_SELECTED = st.multiselect('Select countries', COUNTRIES, default='France')
 
 # Mask to filter dataframe
 mask_countries = covid['location'].isin(COUNTRIES_SELECTED)

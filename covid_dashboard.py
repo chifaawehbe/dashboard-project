@@ -26,7 +26,7 @@ st.sidebar.title("Visualization Selector")
 
 @st.cache
 def load_data():
-  covid = pd.read_csv('https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/owid-covid-data.csv')
+  covid = pd.read_csv('owid-covid-data.csv')
   covid['date'] = pd.to_datetime(covid['date'])
   return covid
 
