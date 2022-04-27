@@ -71,16 +71,16 @@ rad = st.sidebar.radio('select option', ['Raw Number', 'Cummulative Number', 'Ro
 
 if page == 'Total cases':
 
+    st.write("Total cases over time")
+    fig = go.Figure()
+    for country, covid2 in dfs.items():        
+        fig = fig.add_trace(go.Scatter(x=covid2["date"], y=covid2["total_cases"], name=country),)
+    st.plotly_chart(fig)
+
+if page == 'Total deaths':
+
+    st.write("Total deaths over time")
     fig = go.Figure()
     for country, covid2 in dfs.items():
-                
-        fig = fig.add_trace(go.Scatter(x=covid2["date"], y=covid2["total_cases"], name=country),)
-        st.plotly_chart(fig)
-
-# if page == 'Total deaths':
-
-#     st.write("Total deaths over time")
-#     fig = go.Figure()
-#     for country, covid2 in dfs.items():
-#         fig = fig.add_trace(go.Scatter(x=covid2["date"], y=covid2["total_deaths"], name=country))
-#         st.plotly_chart(fig)
+        fig = fig.add_trace(go.Scatter(x=covid2["date"], y=covid2["total_deaths"], name=country))
+    st.plotly_chart(fig)
