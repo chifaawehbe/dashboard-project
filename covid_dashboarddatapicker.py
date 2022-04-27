@@ -1,16 +1,18 @@
+from turtle import color
 import pandas as pd
 import streamlit as st
 import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 import plotly.express as px
+import datetime
 
 st.title('COVID dashboard')
 st.markdown('''Hello :wave:  For our *open-source* project, we created an interactive **Covid-19** dashboard 
     that allows users to visualize the number of  Covid-19 cases or deaths per country 
     as a function of time''')
 
-st.markdown('''
+st.markdown('''g
           Coronavirus disease (COVID-19) is an infectious disease caused by a newly 
             discovered coronavirus. Most people infected with the COVID-19 virus will 
             experience mild to moderate respiratory illness and recover without requiring 
@@ -30,6 +32,7 @@ def load_data():
   return covid
 
 covid = load_data()
+#data_load_state.text('Data is baked')
 
 def simpleGraph(data):
   # fig=plt.figure(figsize=(14,6))
@@ -44,55 +47,52 @@ def simpleGraph(data):
   plt.savefig('plot.png')
   return fig
 
-fig = px.line(covid, x='date', y = ['new_deaths','new_cases'])
+#datepicker
+today = datetime.date.today()
+dateselecters = st.sidebar.date_input('Start date', datetime.date(2019,3,1))
+tomorrow = today + datetime.timedelta(days=1)
+dateselectere = st.sidebar.date_input('End date', tomorrow)
+if dateselecters < dateselectere:
+    st.success('Start date: `%s`\n\nEnd date:`%s`' % (dateselecters, dateselectere))
+else:
+    st.error('Error: End date must fall after start date.')
+
+# Create a list of possible values and multiselect menu with them in it.
+COUNTRIES = covid['location'].unique()
+COUNTRIES_SELECTED = st.multiselect('Select countries', COUNTRIES)
+
+# Mask to filter dataframe
+mask_countries = covid['location'].isin(COUNTRIES_SELECTED)
+
+data = covid[mask_countries]
+
+fig = px.line(data, x = "date", y = "total_cases", title = 'country')
 st.plotly_chart(fig)
 
-
-
-# continent = st.sidebar.selectbox('Select a Continent',covid['continent'].unique())
+# continent = st.sidebar.selectbox('Select a Continent',covid['continent'])
 # if continent == "Asia":
-#   st.title("Asia") 
+#   st.title("Total cases in Asia") 
 #   asia = covid.loc[covid['continent'] == "Asia"]  
 #   #st.pyplot(simpleGraph(asia), use_container_width = True)
 #   fig = px.line(asia, x="date", y='total_cases')
 #   st.plotly_chart(fig)
 
-#   st.title("New cases and new deaths") 
-#   asia = covid.loc[covid['continent'] == "Asia"]  
-#   #st.pyplot(simpleGraph(asia), use_container_width = True)
-#   fig = px.line(asia, x='date', y = ['new_deaths','new_cases'])
-#   fig.show()
-  
-
-# elif continent == "Europe":
+# if continent == "Europe":
 #   st.title("Total cases in Europe") 
 #   europe = covid.loc[covid['continent'] == "Europe"] 
 #   fig = px.line(europe, x="date", y='total_cases')
 #   st.plotly_chart(fig)
   
-# elif continent == "Africa":
+# if continent == "Africa":
 #   st.title("Total cases in Africa") 
 #   africa = covid.loc[covid['continent'] == "Africa"] 
 #   fig = px.line(africa, x="date", y='total_cases')
 #   st.plotly_chart(fig)
   
-# elif continent == "North America":
-#   st.title("Total cases in North America") 
-#   na = covid.loc[covid['continent'] == "North America"] 
-#   fig = px.line(na, x="date", y='total_cases')
-#   st.plotly_chart(fig)
-
-# elif continent == "South America":
-#   st.title("Total cases in South America") 
-#   sa = covid.loc[covid['continent'] == "South America"] 
-#   fig = px.line(sa, x="date", y='total_cases')
-#   st.plotly_chart(fig)
-
-# #if continent == "Oceania":
-# else:
-#   st.title("Total cases in Oceania") 
-#   ocean = covid.loc[covid['continent'] == "Oceania"] 
-#   fig = px.line(ocean, x="date", y='total_cases')
+# if continent == "Africa":
+#   st.title("Total cases in Africa") 
+#   africa = covid.loc[covid['continent'] == "Africa"] 
+#   fig = px.line(africa, x="date", y='total_cases')
 #   st.plotly_chart(fig)
 
 
