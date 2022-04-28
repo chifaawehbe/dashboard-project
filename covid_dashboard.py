@@ -24,7 +24,7 @@ st.markdown('''Hello :wave:  For our *open-source* project, we created an intera
             
 st.sidebar.title("Visualization Selector")
 
-@st.cache
+@st.cache(allow_output_mutation=True)
 def load_data(url):
     df = pd.read_csv(url)
     df["date"] = pd.to_datetime(df.date).dt.date
@@ -47,6 +47,22 @@ for x in not_a_country:
 selected_countries = st.multiselect("Choose a country", countries, default=["France"])
 #st.markdown(f"### You Selected: {', '.join(selected_countries)}")
 #st.header("You selected: {}".format(", ".join(selected_countries)))
+
+# 7day rolling avgerage
+covid['rolling_avg_cases_per_million'] = covid['new_cases_per_million'].rolling(window=7).mean()
+covid['rolling_avg_cases_per_million'] = covid['rolling_avg_cases_per_million'].fillna(0)
+
+covid['rolling_avg_deaths_per_million'] = covid['new_deaths_per_million'].rolling(window=7).mean()
+covid['rolling_avg_deaths_per_million'] = covid['rolling_avg_deaths_per_million'].fillna(0)
+
+# cumulated number
+covid=covid.sort_values(['date']).reset_index(drop=True)
+
+covid['new_cases_per_million'] = covid['new_cases_per_million'].fillna(0)
+covid['cumulative_number_cases_per_million'] = covid.groupby(['location'])['new_cases_per_million'].cumsum(axis=0)
+
+covid['new_deaths_per_million'] = covid['new_deaths_per_million'].fillna(0)
+covid['cumulative_number_deaths_per_million'] = covid.groupby(['location'])['new_deaths_per_million'].cumsum(axis=0)
 
 # Matching the countries selected to the countries in the dataframe
 def match_countries(list_selected_counties):
@@ -82,15 +98,17 @@ new_covid = covid_countries.loc[mask]
 def plot(data_type, graph_title, y_title):
     fig = px.line(new_covid, x=new_covid['date'], y=new_covid[data_type], color='location',
     color_discrete_sequence=px.colors.qualitative.G10)
-
-    graph = st.plotly_chart(fig.update_layout(title = graph_title, 
-    xaxis_title = 'Date', yaxis_title = y_title), use_container_width=True)
+    
+    fig.update_layout(margin={"r": 0, "t": 50, "l": 0, "b": 0})
+    
+    graph = st.plotly_chart(fig.update_layout(title = graph_title, xaxis_title = 'Date', 
+    yaxis_title = y_title), use_container_width=True)
 
     return graph
 
 # Configure all the possible cases
 if data == 'Total cases' and data_type == 'Cumulated data':
-  plot(data_type='total_cases_per_million', graph_title = 'Covid cases Cumulated data',
+  plot(data_type='cumulative_number_cases_per_million', graph_title = 'Covid cases Cumulated data',
   y_title='Cumulated number of cases (per million)')
 
 if data == 'Total cases' and data_type == 'Raw data':
@@ -98,11 +116,11 @@ if data == 'Total cases' and data_type == 'Raw data':
   y_title='Raw number of cases (per million)') 
 
 if data == 'Total cases' and data_type == '7 days rolling average':
-  plot(data_type='new_cases_smoothed_per_million', graph_title = 'Covid cases 7 days rolling average',
+  plot(data_type='rolling_avg_cases_per_million', graph_title = 'Covid cases 7 days rolling average',
   y_title='7 days rolling average of cases (per million)')
   
 if data == 'Total deaths' and data_type == 'Cumulated data':
-  plot(data_type='total_deaths_per_million', graph_title = 'Covid deaths Cumulated data',
+  plot(data_type='cumulative_number_deaths_per_million', graph_title = 'Covid deaths Cumulated data',
   y_title='Cumulated number of deaths (per million)')
   
 if data == 'Total deaths' and data_type == 'Raw data':
@@ -110,7 +128,7 @@ if data == 'Total deaths' and data_type == 'Raw data':
   y_title='Raw number of deaths (per million)')  
 
 if data == 'Total deaths' and data_type == '7 days rolling average':
-  plot(data_type='new_deaths_smoothed_per_million', graph_title = 'Covid deaths 7 days rolling average',
+  plot(data_type='rolling_avg_deaths_per_million', graph_title = 'Covid deaths 7 days rolling average',
   y_title='7 days rolling average of deaths (per million)')
   
 
