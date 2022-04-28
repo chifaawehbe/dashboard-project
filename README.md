@@ -9,7 +9,8 @@ The data used in the implementation of this project is from https://covid.ourwor
 
 #### Create the virtual environment
 1. Open VS code
-1. Go to the terminal where you cloned the project
+1. Clone the project with `git clone "https://github.com/chifaawehbe/dashboard-project.git"`
+1. In the folder, where you cloned the project, go to the terminal 
 1. To create the new environment, run the command: `python3 -m venv dashboard-env` 
 1. Activate your virtual python environment : `source dashboard-env/bin/activate` 
 1. Install the dependencies: `python -m pip install -r requirements.txt`

@@ -79,37 +79,40 @@ mask = (covid_countries['date'] > start) & (covid_countries['date'] <= end)
 new_covid = covid_countries.loc[mask]
 
 # Plot Function
-def plot(data_type):
-    fig=px.line(new_covid, x=new_covid['date'], y=new_covid[data_type], color='location',
+def plot(data_type, graph_title, y_title):
+    fig = px.line(new_covid, x=new_covid['date'], y=new_covid[data_type], color='location',
     color_discrete_sequence=px.colors.qualitative.G10)
-    return fig
+
+    graph = st.plotly_chart(fig.update_layout(title = graph_title, 
+    xaxis_title = 'Date', yaxis_title = y_title), use_container_width=True)
+
+    return graph
 
 # Configure all the possible cases
 if data == 'Total cases' and data_type == 'Cumulated data':
-  #st.markdown("Covid cases Cumulated data")
-  st.plotly_chart(plot(data_type='total_cases_per_million').update_layout(title='Covid cases Cumulated data', 
-  xaxis_title='Date', yaxis_title='Cumulated number of cases (per million)'), use_container_width=True)
+  plot(data_type='total_cases_per_million', graph_title = 'Covid cases Cumulated data',
+  y_title='Cumulated number of cases (per million)')
 
 if data == 'Total cases' and data_type == 'Raw data':
-  st.plotly_chart(plot(data_type='new_cases_per_million').update_layout(title='Covid cases Raw data', 
-  xaxis_title='Date', yaxis_title='Raw number of cases (per million)'), use_container_width=True)  
+  plot(data_type='new_cases_per_million', graph_title = 'Covid cases Raw data',
+  y_title='Raw number of cases (per million)') 
 
 if data == 'Total cases' and data_type == '7 days rolling average':
-  st.plotly_chart(plot(data_type='new_cases_smoothed_per_million').update_layout(title='Covid cases 7 days rolling average', 
-  xaxis_title='Date', yaxis_title='7 days rolling average of cases (per million)'), use_container_width=True) 
-
+  plot(data_type='new_cases_smoothed_per_million', graph_title = 'Covid cases 7 days rolling average',
+  y_title='7 days rolling average of cases (per million)')
+  
 if data == 'Total deaths' and data_type == 'Cumulated data':
-  st.plotly_chart(plot(data_type='total_deaths_per_million').update_layout(title='Covid deaths Cumulated data', 
-  xaxis_title='Date', yaxis_title='Cumulated number of deaths (per million)'), use_container_width=True)
-
+  plot(data_type='total_deaths_per_million', graph_title = 'Covid deaths Cumulated data',
+  y_title='Cumulated number of deaths (per million)')
+  
 if data == 'Total deaths' and data_type == 'Raw data':
-  st.plotly_chart(plot(data_type='new_deaths_per_million').update_layout(title='Covid deaths Raw data', 
-  xaxis_title='Date', yaxis_title='Raw number of deaths (per million)'), use_container_width=True)  
+  plot(data_type='new_deaths_per_million', graph_title = 'Covid deaths Raw data',
+  y_title='Raw number of deaths (per million)')  
 
 if data == 'Total deaths' and data_type == '7 days rolling average':
-  st.plotly_chart(plot(data_type='new_deaths_smoothed_per_million').update_layout(title='Covid deaths 7 days rolling average', 
-  xaxis_title='Date', yaxis_title='7 days rolling average of deaths (per million)'), use_container_width=True) 
-
+  plot(data_type='new_deaths_smoothed_per_million', graph_title = 'Covid deaths 7 days rolling average',
+  y_title='7 days rolling average of deaths (per million)')
+  
 
 
 
