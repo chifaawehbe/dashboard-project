@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 Chifaa Wehbe <chifaawehbi@gmail.com>
+=======
+Chifaa Wehbe <chifaa.wehbe@cri-paris.org>
+>>>>>>> a6cc7477ed2b9c5717fbb6e5f7f392b59e00733b
 Zahra Farook <fzahrafarook@gmail.com>
 Abdullah Khattak <abdullah.khattak@cri-paris.org>

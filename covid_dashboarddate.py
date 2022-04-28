@@ -32,7 +32,7 @@ def load_data(url):
     return df
 
 #Load the data
-url = "owid-covid-data.csv"
+url = "https://covid.ourworldindata.org/data/owid-covid-data.csv"
 covid = load_data(url)
 
 #Remove the locations that are not a country
@@ -55,17 +55,19 @@ def match_countries(list_selected_counties):
 
 covid_countries = match_countries(selected_countries)
 
+# Date Picker
+today = datetime.date.today()
+start = st.sidebar.date_input('Start date', datetime.date(2020,3,1))
+tomorrow = today + datetime.timedelta(days=1)
+end = st.sidebar.date_input('End date', tomorrow)
+
 # Data Picker
 data = st.sidebar.selectbox('Choose the data',('Total cases', 'Total deaths'))
 
 # Data Type Picker
 data_type = st.sidebar.radio("Choose the data type", ["Cumulated data", "Raw data", "7 days rolling average"])
 
-# Date Picker
-today = datetime.date.today()
-start = st.sidebar.date_input('Start date', datetime.date(2020,3,1))
-tomorrow = today + datetime.timedelta(days=1)
-end = st.sidebar.date_input('End date', tomorrow)
+
 # if start < end:
 #     st.success('Start date: `%s`\n\nEnd date:`%s`' % (start, end))
 # else:

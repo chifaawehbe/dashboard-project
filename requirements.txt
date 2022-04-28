@@ -1,5 +1,5 @@
 matplotlib == 3.5.1
 streamlit == 1.8.1
 seaborn == 0.11.2
-ploytly == 5.7.0
+plotly == 5.7.0
 pandas
