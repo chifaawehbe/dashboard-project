@@ -7,10 +7,10 @@ import plotly.express as px
 import numpy as np
 import datetime
 
-st.title('COVID dashboard')
-st.markdown('''Hello :wave:  For our *open-source* project, we created an interactive **Covid-19** dashboard 
-    that allows users to visualize the number of  Covid-19 cases or deaths per country 
-    as a function of time''')
+st.title('COVID-19 Dashboard')
+st.markdown(''' Hello :wave:  For our *open-source* project, we created an interactive **Covid-19** dashboard 
+that allows users to
+- Visualize the number of  Covid-19 *Cases* or *Deaths* per *Country* over user selected period of Time''')
 
 # st.markdown('''
 #           Coronavirus disease (COVID-19) is an infectious disease caused by a newly 
@@ -101,6 +101,7 @@ def plot(data_type, graph_title, y_title):
     
     fig.update_layout(margin={"r": 0, "t": 50, "l": 0, "b": 0})
     
+    
     graph = st.plotly_chart(fig.update_layout(title = graph_title, xaxis_title = 'Date', 
     yaxis_title = y_title), use_container_width=True)
 
@@ -110,6 +111,7 @@ def plot(data_type, graph_title, y_title):
 if data == 'Total cases' and data_type == 'Cumulated data':
   plot(data_type='cumulative_number_cases_per_million', graph_title = 'Covid cases Cumulated data',
   y_title='Cumulated number of cases (per million)')
+  
 
 if data == 'Total cases' and data_type == 'Raw data':
   plot(data_type='new_cases_per_million', graph_title = 'Covid cases Raw data',
@@ -130,7 +132,9 @@ if data == 'Total deaths' and data_type == 'Raw data':
 if data == 'Total deaths' and data_type == '7 days rolling average':
   plot(data_type='rolling_avg_deaths_per_million', graph_title = 'Covid deaths 7 days rolling average',
   y_title='7 days rolling average of deaths (per million)')
-  
 
+st.subheader('Dataframe of filter selected')
+st.dataframe(new_covid)
+  
 
 
