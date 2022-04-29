@@ -133,8 +133,8 @@ if data == 'Total deaths' and data_type == '7 days rolling average':
   plot(data_type='rolling_avg_deaths_per_million', graph_title = 'Covid deaths 7 days rolling average',
   y_title='7 days rolling average of deaths (per million)')
 
-st.subheader('Dataframe of filter selected')
-st.dataframe(new_covid)
+#st.subheader('Dataframe of filter selected')
+#st.dataframe(new_covid)
   
 
 
