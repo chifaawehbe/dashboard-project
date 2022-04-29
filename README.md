@@ -26,6 +26,9 @@ https://share.streamlit.io/chifaawehbe/dashboard-project/covid_dashboard.py
 
 #### Archive link (Software Heritage)
 [![SWH](https://archive.softwareheritage.org/badge/swh:1:dir:ddd368c6fcac5444df2484f9f8e1cfb7284374e6/)](https://archive.softwareheritage.org/swh:1:dir:ddd368c6fcac5444df2484f9f8e1cfb7284374e6;origin=https://github.com/chifaawehbe/dashboard-project;visit=swh:1:snp:d14c022645a7a3093a613c0039efa24f4d1bbcf4;anchor=swh:1:rev:e4fee1f836b3d4bc24d2be5dd207ecc72cbf1f22)
+  
+ ##### Run locally
+  `streamlit run covid_dashboard.py`
 
 #### References 
   <li> https://towardsdatascience.com/plotly-dash-vs-streamlit-which-is-the-best-library-for-building-data-dashboard-web-apps-97d7c98b938c
